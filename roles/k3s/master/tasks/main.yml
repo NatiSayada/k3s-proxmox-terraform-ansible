@@ -77,3 +77,21 @@
     src: /usr/local/bin/k3s
     dest: /usr/local/bin/crictl
     state: link
+
+- name: check if helm is installed /usr/local/bin/helm
+  stat:
+    path: /usr/local/bin/helm
+  register: helm_check
+
+- name: Download get-helm-3
+  get_url:
+    url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    dest: ~/get-helm-3.sh
+    mode: '700'
+  when: not helm_check.stat.exists
+
+- name: install helm if not exist
+  command: >-
+    ~/get-helm-3.sh
+  when: not helm_check.stat.exists
+  changed_when: true
