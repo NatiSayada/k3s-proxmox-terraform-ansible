@@ -26,6 +26,7 @@ Proxmox server
 ## Usage
 
 ### proxmox setup
+
 This setup is relayig on cloud-init image and its save a lot of the image configuration.
 I use ubuntu focal image, to configure the cloud-init image you will need to connect to a linux server and run the following:
 
@@ -47,10 +48,17 @@ update the image and install proxmox agent - this is a must if we want terrafom 
 it can take a minute to add the packege to the image.
 
 ```bash
-virt-customize --install qemu-guest-agent
+virt-customize focal-server-cloudimg-amd64.img --install qemu-guest-agent
 ```
 
-now we need will create a new vm
+now that we have the image, we need to move it to the proxmox server.
+we can do that by using `scp`
+
+```bash
+scp focal-server-cloudimg-amd64.img proxmox_username@proxmox_host:/path_on_proxmox/focal-server-cloudimg-amd64.img
+```
+
+so now we should have the image configured and on our proxmox server. lets start creating the VM
 
 ```bash
 qm create 9000 --name "ubuntu-focal-cloudinit-template" --memory 2048 --net0 virtio,bridge=vmbr0
@@ -62,17 +70,41 @@ for ubuntu images, rename the image suffix
 mv focal-server-cloudimg-amd64.img focal-server-cloudimg-amd64.qcow2
 ```
 
-import the disk
+import the disk to the VM
 
 ```bash
 qm importdisk 9000 focal-server-cloudimg-amd64.qcow2 local-lvm
 ```
 
-configure the vm to use the image
+configure the VM to use the new image
 
 ```bash
 qm set 9000 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9000-disk-0
 ```
+
+add cloud init image to the VM
+
+```bash
+qm set 9000 --ide2 local-lvm:cloudinit
+```
+
+set the VM to boot from the cloud init disk:
+
+```bash
+qm set 9000 --boot c --bootdisk scsi0
+```
+
+update the serial on the VM
+
+```bash
+qm set 9000 --serial0 socket --vga serial0
+```
+
+Good! so we are almost done with the image. now we can configure are base configuration for the image.
+you can connecto to the proxmox server and go to your VM and look on the cloudinit tab, here you will find some more parameters that we will nedd to change. 
+
+![alt text](pics/gui-cloudinit-config.png)
+
 
 ### terraform setup
 
