@@ -88,7 +88,7 @@ qm set 9000 --serial0 socket --vga serial0
 ```
 
 Good! so we are almost done with the image. now we can configure our base configuration for the image.
-you can connect to the proxmox server and go to your VM and look on the cloud-init tab, here you will find some more parameters that we will need to change. 
+you can connect to the proxmox server and go to your VM and look on the cloud-init tab, here you will find some more parameters that we will need to change.
 
 ![alt text](pics/gui-cloudinit-config.png)
 
@@ -122,6 +122,7 @@ terraform apply
 it can take some time to create the servers on proxmox but you can monitor them over proxmox.
 
 ### ansible setup
+
 First, update the var file in `inventory/my-cluster/group_vars/all.yml` and update the user name that you're selected in the cloud-init setup.
 
 after you run the terrafom file, your file should look like this:
