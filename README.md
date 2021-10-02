@@ -103,6 +103,12 @@ qm template 9000
 
 ### terraform setup
 
+our terraform file also create a dynamic host file for ansible, so we need to create the files first
+
+```bash
+cp -R inventory/sample inventory/my-cluster
+```
+
 Rename the file `terraform/vars.sample` to `terraform/vars.tf` and update all the vars.
 there you can select how many nodes wold you like to have on your cluster and configure the name of the base image.
 to run the terrafom, you will need to cd into `terraform` and run:
@@ -116,28 +122,24 @@ terraform apply
 it can take some time to create the servers on proxmox but you can monitor them over proxmox.
 
 ### ansible setup
+First, update the var file in `inventory/my-cluster/group_vars/all.yml` and update the user name that your selected in the cloud-init setup.
 
-First create a new directory based on the `sample` directory within the `inventory` directory:
-
-```bash
-cp -R inventory/sample inventory/my-cluster
-```
-
-Second, edit `inventory/my-cluster/hosts.ini` to match the system information gathered above. For example:
+after you run the terrafom file, your file should look like this:
 
 ```bash
 [master]
-192.16.35.12
+192.168.3.200 ansible_ssh_private_key_file=~/.ssh/proxk3s
 
 [node]
-192.16.35.[10:11]
+192.168.3.202 ansible_ssh_private_key_file=~/.ssh/proxk3s
+192.168.3.201 ansible_ssh_private_key_file=~/.ssh/proxk3s
+192.168.3.198 ansible_ssh_private_key_file=~/.ssh/proxk3s
+192.168.3.203 ansible_ssh_private_key_file=~/.ssh/proxk3s
 
 [k3s_cluster:children]
 master
 node
 ```
-
-If needed, you can also edit `inventory/my-cluster/group_vars/all.yml` to match your environment.
 
 Start provisioning of the cluster using the following command:
 
