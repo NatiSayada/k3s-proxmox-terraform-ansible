@@ -1,4 +1,4 @@
-# Build a Kubernetes cluster using k3s via Ansible and Terraform
+# Build a Kubernetes cluster using k3s on Proxmox via Ansible and Terraform
 
 Author: <https://github.com/itwars> and <https://github.com/NatiSayada>
 
