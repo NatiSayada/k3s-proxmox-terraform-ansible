@@ -14,8 +14,12 @@ This is based on the great work that <https://github.com/itwars> done with Ansib
 
 ### Proxmox setup
 
-This setup is relaying on cloud-init images and it saves a lot of the image configuration.
-I use ubuntu focal image, to configure the cloud-init image you will need to connect to a Linux server and run the following:
+This setup is relaying on cloud-init images.
+
+Using cloud-init image save us a lot of time and it's work great!
+I use ubuntu focal image, you can use whatever distro you like.
+
+to configure the cloud-init image you will need to connect to a Linux server and run the following:
 
 install image tools on the server (you will need another server, these tools cannot be installed on Proxmox)
 
