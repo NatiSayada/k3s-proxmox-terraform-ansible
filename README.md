@@ -2,7 +2,7 @@
 
 Author: <https://github.com/itwars> and <https://github.com/NatiSayada>
 
-This is based on the great work that <https://github.com/itwars> done with ansible, all I left to do is to put it all together with terraform and Proxmox!
+This is based on the great work that <https://github.com/itwars> done with Ansible, all I left to do is to put it all together with terraform and Proxmox!
 
 ## System requirements
 
@@ -12,7 +12,7 @@ Proxmox server
 
 ## Usage
 
-### proxmox setup
+### Proxmox setup
 
 This setup is relaying on cloud-init images and it saves a lot of the image configuration.
 I use ubuntu focal image, to configure the cloud-init image you will need to connect to a Linux server and run the following:
@@ -31,21 +31,21 @@ it can also work for Debian and centos (R.I.P)
 wget https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
 ```
 
-update the image and install proxmox agent - this is a must if we want terraform to work properly.
+update the image and install Proxmox agent - this is a must if we want terraform to work properly.
 it can take a minute to add the package to the image.
 
 ```bash
 virt-customize focal-server-cloudimg-amd64.img --install qemu-guest-agent
 ```
 
-now that we have the image, we need to move it to the proxmox server.
+now that we have the image, we need to move it to the Proxmox server.
 we can do that by using `scp`
 
 ```bash
-scp focal-server-cloudimg-amd64.img proxmox_username@proxmox_host:/path_on_proxmox/focal-server-cloudimg-amd64.img
+scp focal-server-cloudimg-amd64.img Proxmox_username@Proxmox_host:/path_on_Proxmox/focal-server-cloudimg-amd64.img
 ```
 
-so now we should have the image configured and on our proxmox server. let's start creating the VM
+so now we should have the image configured and on our Proxmox server. let's start creating the VM
 
 ```bash
 qm create 9000 --name "ubuntu-focal-cloudinit-template" --memory 2048 --net0 virtio,bridge=vmbr0
@@ -88,11 +88,11 @@ qm set 9000 --serial0 socket --vga serial0
 ```
 
 Good! so we are almost done with the image. now we can configure our base configuration for the image.
-you can connect to the proxmox server and go to your VM and look on the cloud-init tab, here you will find some more parameters that we will need to change.
+you can connect to the Proxmox server and go to your VM and look on the cloud-init tab, here you will find some more parameters that we will need to change.
 
 ![alt text](pics/gui-cloudinit-config.png)
 
-you will need to change the user name, password, and add the ssh public key so we can connect to the VM later using ansible and terraform.
+you will need to change the user name, password, and add the ssh public key so we can connect to the VM later using Ansible and terraform.
 update the variables and click on `Regenerate Image`
 
 Great! so now we can convert the VM to a template and start working with terraform.
@@ -103,7 +103,7 @@ qm template 9000
 
 ### terraform setup
 
-our terraform file also creates a dynamic host file for ansible, so we need to create the files first
+our terraform file also creates a dynamic host file for Ansible, so we need to create the files first
 
 ```bash
 cp -R inventory/sample inventory/my-cluster
@@ -111,7 +111,7 @@ cp -R inventory/sample inventory/my-cluster
 
 Rename the file `terraform/vars.sample` to `terraform/vars.tf` and update all the vars.
 there you can select how many nodes would you like to have on your cluster and configure the name of the base image.
-to run the terrafom, you will need to cd into `terraform` and run:
+to run the Terrafom, you will need to cd into `terraform` and run:
 
 ```bash
 terraform init
@@ -119,23 +119,23 @@ terraform plan
 terraform apply
 ```
 
-it can take some time to create the servers on proxmox but you can monitor them over proxmox.
+it can take some time to create the servers on Proxmox but you can monitor them over Proxmox.
 
-### ansible setup
+### Ansible setup
 
 First, update the var file in `inventory/my-cluster/group_vars/all.yml` and update the user name that you're selected in the cloud-init setup.
 
-after you run the terrafom file, your file should look like this:
+after you run the Terrafom file, your file should look like this:
 
 ```bash
 [master]
-192.168.3.200 ansible_ssh_private_key_file=~/.ssh/proxk3s
+192.168.3.200 Ansible_ssh_private_key_file=~/.ssh/proxk3s
 
 [node]
-192.168.3.202 ansible_ssh_private_key_file=~/.ssh/proxk3s
-192.168.3.201 ansible_ssh_private_key_file=~/.ssh/proxk3s
-192.168.3.198 ansible_ssh_private_key_file=~/.ssh/proxk3s
-192.168.3.203 ansible_ssh_private_key_file=~/.ssh/proxk3s
+192.168.3.202 Ansible_ssh_private_key_file=~/.ssh/proxk3s
+192.168.3.201 Ansible_ssh_private_key_file=~/.ssh/proxk3s
+192.168.3.198 Ansible_ssh_private_key_file=~/.ssh/proxk3s
+192.168.3.203 Ansible_ssh_private_key_file=~/.ssh/proxk3s
 
 [k3s_cluster:children]
 master
@@ -145,7 +145,7 @@ node
 Start provisioning of the cluster using the following command:
 
 ```bash
-ansible-playbook site.yml -i inventory/my-cluster/hosts.ini
+Ansible-playbook site.yml -i inventory/my-cluster/hosts.ini
 ```
 
 ## Kubeconfig
