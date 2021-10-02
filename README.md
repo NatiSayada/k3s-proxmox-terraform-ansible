@@ -121,6 +121,9 @@ terraform apply
 ```
 
 it can take some time to create the servers on Proxmox but you can monitor them over Proxmox.
+it shoul look like this now:
+
+![alt text](pics/h0Ha98fXyO.png)
 
 ### Ansible setup
 
