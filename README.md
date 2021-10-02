@@ -25,7 +25,8 @@ apt-get install libguestfs-tools
 
 Get the image that you would like to work with.
 you can browse to <https://cloud-images.ubuntu.com> and select any other version that you would like to work with.
-it can also work for Debian and centos (R.I.P)
+for Debian, got to <https://cloud.debian.org/images/cloud/>.
+it can also work for centos (R.I.P)
 
 ```bash
 wget https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
