@@ -3,3 +3,5 @@ terraform/terraform.tfstate.backup
 terraform/.terraform.lock.hcl
 inventory/my-cluster/group_vars/all.yml
 terraform/vars.tf
+
+# clear cach for the file '''cat .gitignore | while read line; do git rm --cached $line; done'''
