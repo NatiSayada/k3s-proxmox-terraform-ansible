@@ -24,7 +24,7 @@ Terraform installed
 Proxmox server
 
 ## Usage
-Rename the file `terraform/vars.sample` to `terraform/vars.tf` and update the user and password.
+Rename the file `terraform/vars.sample` to `terraform/vars.tf` and update the user and password/n
 First create a new directory based on the `sample` directory within the `inventory` directory:
 
 ```bash
