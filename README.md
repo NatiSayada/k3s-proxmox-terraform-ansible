@@ -1,6 +1,6 @@
-# Build a Kubernetes cluster using k3s via Ansible
+# Build a Kubernetes cluster using k3s via Ansible and Terraform
 
-Author: <https://github.com/itwars>
+Author: <https://github.com/itwars> and <https://github.com/NatiSayada>
 
 ## K3s Ansible Playbook
 
@@ -20,9 +20,11 @@ on processor architecture:
 
 Deployment environment must have Ansible 2.4.0+
 Master and nodes must have passwordless SSH access
+Terraform installed
+Proxmox server
 
 ## Usage
-
+Rename the file `terraform/vars.sample` to `terraform/vars.tf` and update the user and password.
 First create a new directory based on the `sample` directory within the `inventory` directory:
 
 ```bash

@@ -8,22 +8,18 @@ terraform {
 }
 
 provider "proxmox" {
-  pm_api_url      = "https://192.168.3.102:8006/api2/json"
+  pm_api_url      = "https://${var.proxmox-host}:8006/api2/json"
   pm_user         = "root@pam"
-  pm_password     = "Xx7437338"
+  pm_password     = var.password
   pm_tls_insecure = "true"
   pm_parallel     = 10
 }
 
-variable "pvt_key" {
-  default = "~/.ssh/proxk3s"
-}
-
 resource "proxmox_vm_qemu" "proxmox_vm_master" {
-  count       = 1
+  count       = "${var.num_k3s_masters}"
   name        = "k3s-master-${count.index}"
   target_node = "pve"
-  clone       = "ubuntu-2004-cloudinit-template"
+  clone       = "${var.tamplate_vm_name}"
   os_type     = "cloud-init"
   agent       = 1
   memory      = "2048"
@@ -42,10 +38,10 @@ resource "proxmox_vm_qemu" "proxmox_vm_master" {
 }
 
 resource "proxmox_vm_qemu" "proxmox_vm_workers" {
-  count       = 4
+  count       = "${var.num_k3s_nodes}"
   name        = "k3s-worker-${count.index}"
   target_node = "pve"
-  clone       = "ubuntu-2004-cloudinit-template"
+  clone       = "${var.tamplate_vm_name}"
   os_type     = "cloud-init"
   agent       = 1
   memory      = "4096"
@@ -57,7 +53,7 @@ resource "proxmox_vm_qemu" "proxmox_vm_workers" {
     connection {
       host        = self.default_ipv4_address
       type        = "ssh"
-      user        = "nsayada"
+      user        = "${var.username}"
       private_key = file(var.pvt_key)
     }
   }
