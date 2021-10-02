@@ -22,7 +22,7 @@ resource "proxmox_vm_qemu" "proxmox_vm_master" {
   clone       = "${var.tamplate_vm_name}"
   os_type     = "cloud-init"
   agent       = 1
-  memory      = "2048"
+  memory      = "${var.num_k3s_masters_mem}"
   cores       = 4
 
   provisioner "remote-exec" {
@@ -44,7 +44,7 @@ resource "proxmox_vm_qemu" "proxmox_vm_workers" {
   clone       = "${var.tamplate_vm_name}"
   os_type     = "cloud-init"
   agent       = 1
-  memory      = "4096"
+  memory      = "${var.num_k3s_nodes_mem}"
   cores       = 4
 
   provisioner "remote-exec" {

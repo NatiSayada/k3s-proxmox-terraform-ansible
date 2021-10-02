@@ -2,24 +2,11 @@
 
 Author: <https://github.com/itwars> and <https://github.com/NatiSayada>
 
-## K3s Ansible Playbook
-
-Build a Kubernetes cluster using Ansible with k3s. The goal is easily install a Kubernetes cluster on machines running:
-
-- [X] Debian
-- [X] Ubuntu
-- [X] CentOS
-
-on processor architecture:
-
-- [X] x64
-- [X] arm64
-- [X] armhf
+This is based on the great work that <https://github.com/itwars> done with ansible, all i left to do is to put it all togather with terraform and Proxmox!
 
 ## System requirements
 
 Deployment environment must have Ansible 2.4.0+
-Master and nodes must have passwordless SSH access
 Terraform installed
 Proxmox server
 
@@ -105,11 +92,19 @@ you can connecto to the proxmox server and go to your VM and look on the cloudin
 
 ![alt text](pics/gui-cloudinit-config.png)
 
+you will need to change the user name, password, and add the ssh public key so we can connect to the vm later using ansible and terraform.
+update the variables and click on `Regenerate Image`
+
+Great! so now we can conver the VM to template and start working with terraform.
+
+```bash
+qm template 9000
+```
 
 ### terraform setup
 
 Rename the file `terraform/vars.sample` to `terraform/vars.tf` and update all the vars.
-
+there you can select how many nodes wold you like to have on your cluster and configure the name of the base image.
 to run the terrafom, you will need to cd into `terraform` and run:
 
 ```bash
