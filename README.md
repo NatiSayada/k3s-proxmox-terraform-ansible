@@ -24,7 +24,17 @@ Terraform installed
 Proxmox server
 
 ## Usage
-Rename the file `terraform/vars.sample` to `terraform/vars.tf` and update the user and password/n
+Rename the file `terraform/vars.sample` to `terraform/vars.tf` and update all the vars.
+
+to run the terrafom, you will need to cd into `terraform` and run:
+
+```bash
+terraform init
+terraform plan
+terraform apply
+```
+it can take some time to create the servers on proxmox but you can monitor them over proxmox.
+ 
 First create a new directory based on the `sample` directory within the `inventory` directory:
 
 ```bash
