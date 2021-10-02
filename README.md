@@ -6,9 +6,9 @@ This is based on the great work that <https://github.com/itwars> done with Ansib
 
 ## System requirements
 
-The deployment environment must have Ansible 2.4.0+
-Terraform installed
-Proxmox server
+* The deployment environment must have Ansible 2.4.0+
+* Terraform installed
+* Proxmox server
 
 ## Usage
 
