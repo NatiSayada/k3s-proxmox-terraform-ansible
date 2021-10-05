@@ -1,7 +1,5 @@
 # Build a Kubernetes cluster using k3s on Proxmox via Ansible and Terraform
 
-Author: <https://github.com/itwars> and <https://github.com/NatiSayada>
-
 This is based on the great work that <https://github.com/itwars> done with Ansible, all I left to do is to put it all together with terraform and Proxmox!
 
 ## System requirements
