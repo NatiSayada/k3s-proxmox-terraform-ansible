@@ -51,13 +51,11 @@
     owner: "{{ ansible_user }}"
     mode: "u=rwx,g=rx,o="
 
-- name: Copy config file to user home directory
-  copy:
-    src: /etc/rancher/k3s/k3s.yaml
-    dest: ~{{ ansible_user }}/.kube/config
-    remote_src: yes
+- name: Change k3s.yaml permissions to 644
+  file:
+    path: /etc/rancher/k3s/k3s.yaml
     owner: "{{ ansible_user }}"
-    mode: "644"
+    mode: '644'
 
 - name: Replace https://localhost:6443 by https://master-ip:6443
   command: >-

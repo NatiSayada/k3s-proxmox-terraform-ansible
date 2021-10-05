@@ -16,47 +16,26 @@ provider "proxmox" {
 }
 
 resource "proxmox_vm_qemu" "proxmox_vm_master" {
-  count       = "${var.num_k3s_masters}"
+  count       = var.num_k3s_masters
   name        = "k3s-master-${count.index}"
   target_node = "pve"
-  clone       = "${var.tamplate_vm_name}"
+  clone       = var.tamplate_vm_name
   os_type     = "cloud-init"
   agent       = 1
-  memory      = "${var.num_k3s_masters_mem}"
+  memory      = var.num_k3s_masters_mem
   cores       = 4
 
-  provisioner "remote-exec" {
-    inline = ["sudo apt update", "sudo apt install python3 -y", "echo Done!"]
-
-    connection {
-      host        = self.default_ipv4_address
-      type        = "ssh"
-      user        = "nsayada"
-      private_key = file(var.pvt_key)
-    }
-  }
 }
 
 resource "proxmox_vm_qemu" "proxmox_vm_workers" {
-  count       = "${var.num_k3s_nodes}"
+  count       = var.num_k3s_nodes
   name        = "k3s-worker-${count.index}"
   target_node = "pve"
-  clone       = "${var.tamplate_vm_name}"
+  clone       = var.tamplate_vm_name
   os_type     = "cloud-init"
   agent       = 1
-  memory      = "${var.num_k3s_nodes_mem}"
+  memory      = var.num_k3s_nodes_mem
   cores       = 4
-
-  provisioner "remote-exec" {
-    inline = ["sudo apt install python3 -y", "echo Done!"]
-
-    connection {
-      host        = self.default_ipv4_address
-      type        = "ssh"
-      user        = "${var.username}"
-      private_key = file(var.pvt_key)
-    }
-  }
 
 }
 
