@@ -8,8 +8,8 @@ This is based on the great work that <https://github.com/itwars> done with Ansib
 * Terraform installed
 * Proxmox server
 
-## How to link
-all the information can be found on my blog in medium:
+## How to
+for updated documentation check out my medium:
 [medium](https://medium.com/@ssnetanel/build-a-kubernetes-cluster-using-k3s-on-proxmox-via-ansible-and-terraform-c97c7974d4a5)
 
 ### Proxmox setup
