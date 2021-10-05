@@ -1,7 +1,7 @@
 terraform/terraform.tfstate
 terraform/terraform.tfstate.backup
 terraform/.terraform.lock.hcl
-inventory/my-cluster/group_vars/all.yml
+inventory/my-cluster
 terraform/vars.tf
 terraform/.terraform
 TODO.md
