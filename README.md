@@ -8,7 +8,9 @@ This is based on the great work that <https://github.com/itwars> done with Ansib
 * Terraform installed
 * Proxmox server
 
-## Usage
+## How to
+for updated documentation check out my [medium](https://medium.com/@ssnetanel/build-a-kubernetes-cluster-using-k3s-on-proxmox-via-ansible-and-terraform-c97c7974d4a5).
+
 
 ### Proxmox setup
 
