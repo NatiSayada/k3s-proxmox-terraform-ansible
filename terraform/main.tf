@@ -49,7 +49,7 @@ data "template_file" "k8s" {
 
 resource "local_file" "k8s_file" {
   content  = data.template_file.k8s.rendered
-  filename = "/home/nsayada/k3s-ansible/inventory/my-cluster/hosts.ini"
+  filename = "../inventory/my-cluster/hosts.ini"
 }
 
 output "Master-IPS" {
