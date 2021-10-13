@@ -51,3 +51,8 @@
     path: /etc/sudoers
     validate: 'visudo -cf %s'
   when: ansible_distribution in ['CentOS', 'Red Hat Enterprise Linux']
+
+- name: install nfs-common on the servers
+  package:
+    name: nfs-common
+    state: present

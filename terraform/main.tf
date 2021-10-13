@@ -25,6 +25,8 @@ resource "proxmox_vm_qemu" "proxmox_vm_master" {
   memory      = var.num_k3s_masters_mem
   cores       = 4
 
+  ipconfig0 = "ip=192.168.3.8${count.index + 1}/24,gw=192.168.3.1"
+
 }
 
 resource "proxmox_vm_qemu" "proxmox_vm_workers" {
@@ -36,6 +38,8 @@ resource "proxmox_vm_qemu" "proxmox_vm_workers" {
   agent       = 1
   memory      = var.num_k3s_nodes_mem
   cores       = 4
+
+  ipconfig0 = "ip=192.168.3.9${count.index + 1}/24,gw=192.168.3.1"
 
 }
 
