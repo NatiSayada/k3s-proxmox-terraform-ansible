@@ -17,3 +17,8 @@
   become: yes
   roles:
     - role: k3s/node
+
+- hosts: localhost
+  connection: local
+  roles:
+   - role: postconfig/localhost

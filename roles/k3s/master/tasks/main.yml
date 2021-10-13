@@ -49,6 +49,7 @@
   changed_when: true
 
 
+<<<<<<< HEAD
 - name: check if helm is installed /usr/local/bin/helm
   stat:
     path: /usr/local/bin/helm
@@ -71,3 +72,10 @@
   package:
     name: nfs-common
     state: present
+=======
+- name: copy config to local host
+  fetch:
+    src: /etc/rancher/k3s/k3s.yaml 
+    dest: ~/.kube/config
+    flat: yes
+>>>>>>> main

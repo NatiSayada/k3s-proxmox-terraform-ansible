@@ -9,15 +9,9 @@ WantedBy=multi-user.target
 
 [Service]
 Type=notify
-<<<<<<< HEAD
-ExecStartPre=-/sbin/modprobe br_netfilter
-ExecStartPre=-/sbin/modprobe overlay
-ExecStart=/usr/local/bin/k3s server --write-kubeconfig-mode "0644" {{ extra_server_args | default("") }}
-=======
 EnvironmentFile=-/etc/default/%N
 EnvironmentFile=-/etc/sysconfig/%N
 EnvironmentFile=-/etc/systemd/system/k3s.service.env
->>>>>>> main
 KillMode=process
 Delegate=yes
 # Having non-zero Limit*s causes performance problems due to accounting overhead
@@ -35,3 +29,4 @@ ExecStartPre=-/sbin/modprobe overlay
 ExecStart=/usr/local/bin/k3s \
 server \
 --write-kubeconfig-mode 644 \
+--disable traefik \
