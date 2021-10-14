@@ -12,7 +12,8 @@
   environment:
     K3S_DATASTORE_ENDPOINT: "postgres://k3s:kqG9JzYn3BuJTgr8NPhz5M@192.168.3.103:5432/k3s"
     K3S_NODE_TAINT: "CriticalAddonsOnly=true:NoExecute"
-    K3S_TLSSAN: k3s.sayada.lan
+    K3S_TLSSAN: "{{lb_ip}}"
+    INSTALL_K3S_VERSION: "{{k3s_version}}"
   when: not k3s_installed.stat.exists
   changed_when: true
 

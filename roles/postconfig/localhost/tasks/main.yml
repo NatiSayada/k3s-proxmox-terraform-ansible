@@ -8,8 +8,8 @@
   replace:
     path: ~/.kube/config
     regexp: 'https://127.0.0.1:6443'
-    replace: "https://{{ master_ip }}:6443"
-  when: kubeconfig_path
+    replace: "https://{{ lb_ip }}:6443"
+  when: kubeconfig_path.stat.exists
 
 - name: Change k3s.yaml permissions to 644
   file:

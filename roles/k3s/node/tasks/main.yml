@@ -12,10 +12,5 @@
   environment: 
     K3S_URL: "https://{{ master_ip }}:6443"
     K3S_TOKEN: "{{ hostvars[groups['master'][0]]['token'] }}"
-  
+    INSTALL_K3S_VERSION: "{{k3s_version}}"
   changed_when: true
-
-- name: install nfs utils
-  package:
-    name: nfs-common
-    state: present
