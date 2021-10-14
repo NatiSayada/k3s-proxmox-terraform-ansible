@@ -43,6 +43,7 @@ resource "proxmox_vm_qemu" "proxmox_vm_workers" {
 
 }
 
+
 data "template_file" "k8s" {
   template = file("./templates/k8s.tpl")
   vars = {

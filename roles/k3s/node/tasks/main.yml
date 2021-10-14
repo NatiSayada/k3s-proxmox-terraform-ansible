@@ -1,37 +1,19 @@
 ---
 
-- name: check if k3s is already installed /var/lib/rancher/k3s/server/node-token
+- name: check if k3s is already installed /etc/systemd/system/k3s.service
   stat:
-    path: /usr/local/bin/k3s
-  become_user: "{{ ansible_user }}"
+    path: /etc/systemd/system/k3s.service
   register: k3s_installed
 
 - name: install and added to cluster if not exist
 
   command: >-
-    cat ~/k3s.sh | K3S_URL=K3S_URL K3S_TOKEN=K3S_TOKEN sh -
-  become_user: "{{ ansible_user }}"
+    /tmp/k3s.sh
   environment: 
     K3S_URL: "https://{{ master_ip }}:6443"
     K3S_TOKEN: "{{ hostvars[groups['master'][0]]['token'] }}"
   
   changed_when: true
-
-
-# - name: Copy K3s service file
-#   template:
-#     src: "k3s.service.j2"
-#     dest: "{{ systemd_dir }}/k3s-node.service"
-#     owner: root
-#     group: root
-#     mode: 0755
-
-# - name: Enable and check K3s service
-#   systemd:
-#     name: k3s-node
-#     daemon_reload: yes
-#     state: restarted
-#     enabled: yes
 
 - name: install nfs utils
   package:
