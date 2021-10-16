@@ -8,11 +8,12 @@
 
 - name: install k3s
   command: >-
-    /tmp/k3s.sh server --node-taint $K3S_NODE_TAINT --datastore-endpoint $K3S_DATASTORE_ENDPOINT --tls-san $K3S_TLSSAN
+    /tmp/k3s.sh server --cluster-init --tls-san $K3S_TLSSAN --disable servicelb
   environment:
-    K3S_DATASTORE_ENDPOINT: "postgres://k3s:kqG9JzYn3BuJTgr8NPhz5M@192.168.3.103:5432/k3s"
-    K3S_NODE_TAINT: "CriticalAddonsOnly=true:NoExecute"
+    # K3S_DATASTORE_ENDPOINT: "postgres://k3s:kqG9JzYn3BuJTgr8NPhz5M@192.168.3.103:5432/k3s"
+    # K3S_NODE_TAINT: "CriticalAddonsOnly=true:NoExecute" # needs to add --node-taint $K3S_NODE_TAINT to the command to enable taint
     K3S_TLSSAN: "{{lb_ip}}"
+    K3S_TOKEN: "K108b3a39c5198998adbedc5fa0b173853c04496188cf5cbb0f9a4072ec39d14a6d::server:c0c788fc75e41db1a6b5e30b15d8f7ef"
     INSTALL_K3S_VERSION: "{{k3s_version}}"
   when: not k3s_installed.stat.exists
   changed_when: true

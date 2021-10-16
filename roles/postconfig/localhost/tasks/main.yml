@@ -11,7 +11,7 @@
     replace: "https://{{ lb_ip }}:6443"
   when: kubeconfig_path.stat.exists
 
-- name: Change k3s.yaml permissions to 644
+- name: Change k3s.yaml permissions to 600
   file:
     path: ~/.kube/config
     mode: '600'
