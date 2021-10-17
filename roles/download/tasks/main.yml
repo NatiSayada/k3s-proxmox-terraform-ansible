@@ -11,3 +11,8 @@
     dest: /tmp/k3s.sh
     mode: 777
   when: not k3s_script_exist.stat.exists
+
+- name: install nfs-common on the servers
+  package:
+    name: nfs-common
+    state: present
