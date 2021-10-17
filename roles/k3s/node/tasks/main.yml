@@ -8,11 +8,8 @@
 - name: install and added to cluster if not exist
 
   command: >-
-    /tmp/k3s.sh --server $K3S_URL --tls-san $K3S_TLSSAN
+    /tmp/k3s.sh server --server https://{{ master_ip }}:6443 --tls-san {{lb_ip}}
   environment: 
-    K3S_URL: "https://{{ master_ip }}:6443"
-    K3S_TLSSAN: "{{lb_ip}}"
-    K3S_TOKEN: "K108b3a39c5198998adbedc5fa0b173853c04496188cf5cbb0f9a4072ec39d14a6d::server:c0c788fc75e41db1a6b5e30b15d8f7ef"
-    # K3S_TOKEN: "{{ hostvars[groups['master'][0]]['token'] }}"
+    K3S_TOKEN: "{{ hostvars[groups['master'][0]]['token'] }}"
     INSTALL_K3S_VERSION: "{{k3s_version}}"
   changed_when: true

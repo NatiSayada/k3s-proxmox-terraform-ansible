@@ -1,19 +1,15 @@
 ---
-# k3s script install
 
-- name: check if dk3s is already installed /etc/systemd/system/k3s.service
+- name: check if k3s is already installed /etc/systemd/system/k3s.service
   stat:
     path: /etc/systemd/system/k3s.service
   register: k3s_installed
 
-- name: install k3s
+- name: install and added to cluster if not exist
+
   command: >-
-    /tmp/k3s.sh server --token $K3S_TOKEN --node-taint $K3S_NODE_TAINT --datastore-endpoint $K3S_DATASTORE_ENDPOINT --tls-san $K3S_TLSSAN --disable servicelb
-  environment:
-    K3S_DATASTORE_ENDPOINT: "postgres://k3s:kqG9JzYn3BuJTgr8NPhz5M@192.168.3.103:5432/k3s"
-    K3S_NODE_TAINT: CriticalAddonsOnly=true:NoExecute
+    /tmp/k3s.sh server --server https://{{ master_ip }}:6443 --tls-san {{lb_ip}}
+  environment: 
     K3S_TOKEN: "{{ hostvars[groups['master'][0]]['token'] }}"
     INSTALL_K3S_VERSION: "{{k3s_version}}"
-    K3S_TLSSAN: "{{lb_ip}}"
-  when: not k3s_installed.stat.exists
   changed_when: true

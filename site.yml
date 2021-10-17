@@ -15,6 +15,7 @@
 
 - hosts: master[1:]
   become: yes
+  serial: 1
   roles:
     - role: k3s/master_node
 
