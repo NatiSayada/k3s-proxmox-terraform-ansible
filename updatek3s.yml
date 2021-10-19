@@ -1,0 +1,20 @@
+---
+- name: nodes
+  hosts: k3s_cluster
+  become: yes
+
+  vars:
+    nfsmounts:
+      - {  path: "/mnt/nfs_mount", src: "192.168.3.110:/data-pool/k3s" }
+      - {  path: "/mnt/nfs_mount2", src: "192.168.3.110:/data-pool" }
+
+  tasks:
+  - name: mount nfs share on the nodes
+    mount:
+        fstype: nfs
+        opts: defaults
+        state: mounted
+        src: "{{item.src}}"
+        path: "{{item.path}}"
+        fstab:
+    with_items: "{{nfsmounts}}"
