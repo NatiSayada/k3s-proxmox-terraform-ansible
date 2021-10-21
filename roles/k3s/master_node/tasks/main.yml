@@ -8,7 +8,7 @@
 - name: install and added to cluster if not exist
 
   command: >-
-    /tmp/k3s.sh server --server https://{{ master_ip }}:6443 --tls-san {{lb_ip}}
+    /tmp/k3s.sh server --server https://{{ master_ip }}:6443 --tls-san {{lb_ip}} --disable servicelb
   environment: 
     K3S_TOKEN: "{{ hostvars[groups['master'][0]]['token'] }}"
     INSTALL_K3S_VERSION: "{{k3s_version}}"
