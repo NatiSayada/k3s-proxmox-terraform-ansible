@@ -1,0 +1,7 @@
+proxmox-host = "192.168.3.110"
+pvt_key = "~/.ssh/proxk3s"
+num_k3s_masters = 1
+#num_k3s_masters_mem = 4096
+num_k3s_nodes = 4
+#num_k3s_nodes_mem = 4096
+tamplate_vm_name = "ubuntu-2004-cloudinit-template"
