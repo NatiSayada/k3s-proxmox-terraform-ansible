@@ -1,7 +1,17 @@
-proxmox-host = "192.168.3.110"
+pm_host = "192.168.3.110"
+pm_password = "password"
 pvt_key = "~/.ssh/proxk3s"
 num_k3s_masters = 1
 #num_k3s_masters_mem = 4096
 num_k3s_nodes = 4
 #num_k3s_nodes_mem = 4096
-tamplate_vm_name = "ubuntu-2004-cloudinit-template"
+tamplate_vm_name = "ubuntu-focal-cloudinit-template"
+master_ips = [
+  "192.168.3.81"
+]
+worker_ips = [
+  "192.168.3.91",
+  "192.168.3.92",
+  "192.168.3.93",
+  "192.168.3.94",
+]

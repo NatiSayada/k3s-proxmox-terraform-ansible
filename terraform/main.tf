@@ -8,38 +8,46 @@ terraform {
 }
 
 provider "proxmox" {
-  pm_api_url      = "https://${var.proxmox-host}:8006/api2/json"
-  pm_user         = "root@pam"
-  pm_password     = var.password
-  pm_tls_insecure = "true"
+  pm_api_url      = "https://${var.pm_host}:8006/api2/json"
+  pm_user         = var.pm_user
+  pm_password     = var.pm_password
+  pm_tls_insecure = var.pm_tls_insecure
   pm_parallel     = 10
+  pm_timeout      = 300
+  #  pm_debug = true
+  pm_log_enable = true
+  pm_log_file   = "terraform-plugin-proxmox.log"
+  pm_log_levels = {
+    _default    = "debug"
+    _capturelog = ""
+  }
 }
 
 resource "proxmox_vm_qemu" "proxmox_vm_master" {
   count       = var.num_k3s_masters
   name        = "k3s-master-${count.index}"
-  target_node = "pve"
+  target_node = var.pm_node_name
   clone       = var.tamplate_vm_name
   os_type     = "cloud-init"
   agent       = 1
   memory      = var.num_k3s_masters_mem
   cores       = 4
 
-  ipconfig0 = "ip=192.168.3.8${count.index + 1}/24,gw=192.168.3.1"
+  ipconfig0 = "ip=${var.master_ips[count.index]}/${var.networkrange},gw=${var.gateway}"
 
 }
 
 resource "proxmox_vm_qemu" "proxmox_vm_workers" {
   count       = var.num_k3s_nodes
   name        = "k3s-worker-${count.index}"
-  target_node = "pve"
+  target_node = var.pm_node_name
   clone       = var.tamplate_vm_name
   os_type     = "cloud-init"
   agent       = 1
   memory      = var.num_k3s_nodes_mem
   cores       = 4
 
-  ipconfig0 = "ip=192.168.3.9${count.index + 1}/24,gw=192.168.3.1"
+  ipconfig0 = "ip=${var.worker_ips[count.index]}/${var.networkrange},gw=${var.gateway}"
 
 }
 
