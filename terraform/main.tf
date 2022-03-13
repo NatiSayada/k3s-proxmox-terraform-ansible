@@ -64,9 +64,15 @@ resource "local_file" "k8s_file" {
   filename = "../inventory/my-cluster/hosts.ini"
 }
 
+resource "local_file" "var_file" {
+  source = "../inventory/sample/group_vars/all.yml"
+  filename = "../inventory/my-cluster/group_vars/all.yml"
+}
+
 output "Master-IPS" {
   value = ["${proxmox_vm_qemu.proxmox_vm_master.*.default_ipv4_address}"]
 }
+
 output "worker-IPS" {
   value = ["${proxmox_vm_qemu.proxmox_vm_workers.*.default_ipv4_address}"]
 }

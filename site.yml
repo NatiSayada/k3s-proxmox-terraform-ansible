@@ -1,24 +1,23 @@
 ---
-
 - hosts: k3s_cluster
-  gather_facts: yes
-  become: yes
+  gather_facts: true
+  become: true
   roles:
     - role: prereq
     - role: download
     - role: raspberrypi
 
 - hosts: master
-  become: yes
+  become: true
   roles:
     - role: k3s/master
 
 - hosts: node
-  become: yes
+  become: true
   roles:
     - role: k3s/node
 
 - hosts: localhost
   connection: local
   roles:
-   - role: postconfig/localhost
+    - role: postconfig/localhost
