@@ -1,5 +1,4 @@
 ---
-
 - name: Copy K3s service file
   register: k3s_service
   template:
@@ -55,7 +54,7 @@
   file:
     path: /etc/rancher/k3s/k3s.yaml
     owner: "{{ ansible_user }}"
-    mode: '644'
+    mode: "644"
 
 - name: Replace https://localhost:6443 by https://master-ip:6443
   command: >-
@@ -78,6 +77,6 @@
 
 - name: copy config to local host
   fetch:
-    src: /etc/rancher/k3s/k3s.yaml 
+    src: /etc/rancher/k3s/k3s.yaml
     dest: ~/.kube/config
     flat: true

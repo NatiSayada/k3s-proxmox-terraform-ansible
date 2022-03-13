@@ -7,14 +7,14 @@
 - name: replace host ip address in the kubeconfig
   replace:
     path: ~/.kube/config
-    regexp: 'https://127.0.0.1:6443'
+    regexp: "https://127.0.0.1:6443"
     replace: "https://{{ master_ip }}:6443"
   when: kubeconfig_path
 
 - name: Change k3s.yaml permissions to 644
   file:
     path: ~/.kube/config
-    mode: '600'
+    mode: "600"
 
 - name: check if helm is installed /usr/local/bin/helm
   stat:
@@ -25,7 +25,7 @@
   get_url:
     url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
     dest: ~/get-helm-3.sh
-    mode: '700'
+    mode: "700"
   when: not helm_check.stat.exists
 
 - name: install helm if not exist

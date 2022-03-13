@@ -1,5 +1,4 @@
 ---
-
 - hosts: k3s_cluster
   gather_facts: true
   become: true
@@ -21,4 +20,4 @@
 - hosts: localhost
   connection: local
   roles:
-   - role: postconfig/localhost
+    - role: postconfig/localhost
