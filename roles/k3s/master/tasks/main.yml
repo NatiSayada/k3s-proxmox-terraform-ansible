@@ -12,9 +12,9 @@
 - name: Enable and check K3s service
   systemd:
     name: k3s
-    daemon_reload: yes
+    daemon_reload: true
     state: restarted
-    enabled: yes
+    enabled: true
 
 - name: Wait for node-token
   wait_for:
@@ -80,4 +80,4 @@
   fetch:
     src: /etc/rancher/k3s/k3s.yaml 
     dest: ~/.kube/config
-    flat: yes
+    flat: true
