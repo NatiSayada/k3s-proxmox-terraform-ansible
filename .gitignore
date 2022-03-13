@@ -4,3 +4,6 @@ terraform/.terraform.lock.hcl
 inventory/my-cluster
 terraform/.terraform
 TODO.md
+terraform/variables.tfvars
+terraform/.terraform.tfstate.lock.info
+terraform/terraform-plugin-proxmox.log
