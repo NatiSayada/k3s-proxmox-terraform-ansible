@@ -24,8 +24,8 @@ jobs:
       - name: Install test dependencies.
         run: pip3 install yamllint ansible-lint ansible
 
-      - name: Run yamllint.
-        run: yamllint .
+#       - name: Run yamllint.
+#         run: yamllint .
 
       - name: Run ansible-lint.
         run: ansible-lint
