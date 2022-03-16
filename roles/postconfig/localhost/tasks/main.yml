@@ -33,3 +33,16 @@
     ~/get-helm-3.sh
   when: not helm_check.stat.exists
   changed_when: true
+
+- name: Install metallb
+  shell: |
+    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/{{ metallb_version }}/manifests/namespace.yaml
+    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/{{ metallb_version }}/manifests/metallb.yaml
+  when: metallb
+
+- name: Install argocd
+  shell: |
+    kubectl create namespace argocd
+    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "{{ argocd_service_type }}"}}'
+  when: argocd
