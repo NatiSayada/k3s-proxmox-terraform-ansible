@@ -114,24 +114,24 @@ our terraform file also creates a dynamic host file for Ansible, so we need to c
 cp -R inventory/sample inventory/my-cluster
 ```
 
-Rename the file `terraform/vars.sample` to `terraform/vars.tf` and update all the vars.
-there you can select how many nodes would you like to have on your cluster and configure the name of the base image.
+Rename the file `terraform/variables.tfvars.sample` to `terraform/variables.tfvars` and update all the vars.
+there you can select how many nodes would you like to have on your cluster and configure the name of the base image. its also importent to update the ssh key that is going to be used and proxmox host address.
 to run the Terrafom, you will need to cd into `terraform` and run:
 
 ```bash
 terraform init
-terraform plan
-terraform apply
+terraform plan --var-file=variables.tfvars
+terraform apply --var-file=variables.tfvars
 ```
 
 it can take some time to create the servers on Proxmox but you can monitor them over Proxmox.
-it shoul look like this now:
+it should look like this now:
 
 ![alt text](pics/h0Ha98fXyO.png)
 
 ### Ansible setup
 
-First, update the var file in `inventory/my-cluster/group_vars/all.yml` and update the user name that you're selected in the cloud-init setup.
+First, update the var file in `inventory/my-cluster/group_vars/all.yml` and update the user name that you're selected in the cloud-init setup. you can also choose if you wold like to install metallb and argo.
 
 after you run the Terrafom file, your file should look like this:
 
@@ -158,7 +158,7 @@ Ansible-playbook site.yml -i inventory/my-cluster/hosts.ini
 
 ## Kubeconfig
 
-To get access to your **Kubernetes** cluster just
+The ansible should already copy the file to your ~/.kube/config, but if you are having issues you can scp and check the status again.
 
 ```bash
 scp debian@master_ip:~/.kube/config ~/.kube/config
