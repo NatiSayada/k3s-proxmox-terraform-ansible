@@ -9,7 +9,7 @@
     path: ~/.kube/config
     regexp: "https://127.0.0.1:6443"
     replace: "https://{{ master_ip }}:6443"
-  when: kubeconfig_path
+  when: kubeconfig_path and copy_kubeconfig
 
 - name: Change k3s.yaml permissions to 644
   file:
@@ -33,3 +33,33 @@
     ~/get-helm-3.sh
   when: not helm_check.stat.exists
   changed_when: true
+
+- name: Install metallb
+  shell: |
+    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/{{ metallb_version }}/manifests/namespace.yaml
+    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/{{ metallb_version }}/manifests/metallb.yaml
+  when: metallb
+
+- name: configure metallb range
+  shell: |
+    cat <<EOF | kubectl apply -f -
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      namespace: metallb-system
+      name: config
+    data:
+      config: |
+        address-pools:
+        - name: default
+          protocol: layer2
+          addresses:
+          - {{ metallb_range }}
+  when: metallb
+
+- name: Install argocd
+  shell: |
+    kubectl create namespace argocd
+    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "{{ argocd_service_type }}"}}'
+  when: argocd

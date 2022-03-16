@@ -80,3 +80,4 @@
     src: /etc/rancher/k3s/k3s.yaml
     dest: ~/.kube/config
     flat: true
+  when: copy_kubeconfig

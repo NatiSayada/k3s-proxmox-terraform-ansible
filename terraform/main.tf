@@ -13,7 +13,7 @@ provider "proxmox" {
   pm_password     = var.pm_password
   pm_tls_insecure = var.pm_tls_insecure
   pm_parallel     = 10
-  pm_timeout      = 300
+  pm_timeout      = 600
   #  pm_debug = true
   pm_log_enable = true
   pm_log_file   = "terraform-plugin-proxmox.log"
@@ -35,6 +35,15 @@ resource "proxmox_vm_qemu" "proxmox_vm_master" {
 
   ipconfig0 = "ip=${var.master_ips[count.index]}/${var.networkrange},gw=${var.gateway}"
 
+  lifecycle {
+    ignore_changes = [
+      ciuser,
+      sshkeys,
+      disk,
+      network
+    ]
+  }
+
 }
 
 resource "proxmox_vm_qemu" "proxmox_vm_workers" {
@@ -48,6 +57,15 @@ resource "proxmox_vm_qemu" "proxmox_vm_workers" {
   cores       = 4
 
   ipconfig0 = "ip=${var.worker_ips[count.index]}/${var.networkrange},gw=${var.gateway}"
+
+  lifecycle {
+    ignore_changes = [
+      ciuser,
+      sshkeys,
+      disk,
+      network
+    ]
+  }  
 
 }
 

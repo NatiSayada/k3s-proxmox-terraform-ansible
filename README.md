@@ -11,7 +11,6 @@ This is based on the great work that <https://github.com/itwars> done with Ansib
 ## How to
 for updated documentation check out my [medium](https://medium.com/@ssnetanel/build-a-kubernetes-cluster-using-k3s-on-proxmox-via-ansible-and-terraform-c97c7974d4a5).
 
-
 ### Proxmox setup
 
 This setup is relaying on cloud-init images.
@@ -114,24 +113,27 @@ our terraform file also creates a dynamic host file for Ansible, so we need to c
 cp -R inventory/sample inventory/my-cluster
 ```
 
-Rename the file `terraform/vars.sample` to `terraform/vars.tf` and update all the vars.
-there you can select how many nodes would you like to have on your cluster and configure the name of the base image.
+Rename the file `terraform/variables.tfvars.sample` to `terraform/variables.tfvars` and update all the vars.
+there you can select how many nodes would you like to have on your cluster and configure the name of the base image. its also importent to update the ssh key that is going to be used and proxmox host address.
 to run the Terrafom, you will need to cd into `terraform` and run:
 
 ```bash
+cd terraform/
 terraform init
-terraform plan
-terraform apply
+terraform plan --var-file=variables.tfvars
+terraform apply --var-file=variables.tfvars
 ```
 
 it can take some time to create the servers on Proxmox but you can monitor them over Proxmox.
-it shoul look like this now:
+it should look like this now:
 
 ![alt text](pics/h0Ha98fXyO.png)
 
 ### Ansible setup
 
-First, update the var file in `inventory/my-cluster/group_vars/all.yml` and update the user name that you're selected in the cloud-init setup.
+First, update the var file in `inventory/my-cluster/group_vars/all.yml` and update the ```ansible_user``` that you're selected in the cloud-init setup. you can also choose if you wold like to install metallb and argocd. if you are installing metallb, you should also specified an ip range for metallb. 
+
+if you are running multiple clusters in your kubeconfig file, make sure to disable ```copy_kubeconfig```.
 
 after you run the Terrafom file, your file should look like this:
 
@@ -153,13 +155,32 @@ node
 Start provisioning of the cluster using the following command:
 
 ```bash
-Ansible-playbook site.yml -i inventory/my-cluster/hosts.ini
+# cd to the project root folder
+cd ..
+
+# run the playbook
+ansible-playbook -i inventory/my-cluster/hosts.ini site.yml
 ```
 
-## Kubeconfig
+It can a few minutes, but once its done, you should have a k3s cluster up and running.
 
-To get access to your **Kubernetes** cluster just
+### Kubeconfig
+
+The ansible should already copy the file to your ~/.kube/config (if you enable the ```copy_kubeconfig``` in  ```inventory/my-cluster/group_vars/all.yml```), but if you are having issues you can scp and check the status again.
 
 ```bash
 scp debian@master_ip:~/.kube/config ~/.kube/config
 ```
+
+### Argocd
+To get argocd initial password run the following:
+
+```
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+```
+
+## Enjoy!
+
+Kubernets is realy fun to learn and there is so muche things that you can automate.
+
+Have fun :)
