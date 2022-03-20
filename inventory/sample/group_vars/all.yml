@@ -11,4 +11,3 @@ metallb_version: "v0.12.1"
 metallb_range: "192.168.3.93-192.168.3.94"
 argocd: false
 argocd_service_type: LoadBalancer
-

@@ -1,3 +1,4 @@
+---
 files: ^terraform/
 repos:
   - repo: https://github.com/terraform-docs/terraform-docs
