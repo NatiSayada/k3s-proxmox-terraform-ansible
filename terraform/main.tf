@@ -9,6 +9,7 @@ resource "proxmox_vm_qemu" "proxmox_vm_master" {
   cores       = 4
 
   ipconfig0 = "ip=${var.master_ips[count.index]}/${var.networkrange},gw=${var.gateway}"
+  ipconfig1 = "ip=${var.master_ips_private[count.index]}/${var.networkrange_private}"
 
   lifecycle {
     ignore_changes = [
@@ -32,6 +33,7 @@ resource "proxmox_vm_qemu" "proxmox_vm_workers" {
   cores       = 4
 
   ipconfig0 = "ip=${var.worker_ips[count.index]}/${var.networkrange},gw=${var.gateway}"
+  ipconfig1 = "ip=${var.worker_ips_private[count.index]}/${var.networkrange_private}"
 
   lifecycle {
     ignore_changes = [

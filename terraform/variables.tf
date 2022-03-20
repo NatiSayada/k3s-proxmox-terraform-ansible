@@ -51,8 +51,15 @@ variable "tamplate_vm_name" {}
 variable "master_ips" {
   description = "List of ip addresses for master nodes"
 }
+variable "master_ips_private" {
+  description = "List of ip addresses for master nodes"
+}
 
 variable "worker_ips" {
+  description = "List of ip addresses for worker nodes"
+}
+
+variable "worker_ips_private" {
   description = "List of ip addresses for worker nodes"
 }
 
@@ -60,6 +67,14 @@ variable "networkrange" {
   default = 24
 }
 
+variable "networkrange_private" {
+  default = 24
+}
+
 variable "gateway" {
+  default = "192.168.3.1"
+}
+
+variable "gateway_private" {
   default = "192.168.3.1"
 }
