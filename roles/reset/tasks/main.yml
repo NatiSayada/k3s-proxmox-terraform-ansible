@@ -3,7 +3,7 @@
   systemd:
     name: "{{ item }}"
     state: stopped
-    enabled: no
+    enabled: false
   failed_when: false
   with_items:
     - k3s
