@@ -18,6 +18,13 @@
     state: present
     reload: true
 
+- name: fix dns servers in resolv.conf
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+  when:
+    - dns_servers | length() > 0
+
 - name: Add br_netfilter to /etc/modules-load.d/
   copy:
     content: "br_netfilter"
