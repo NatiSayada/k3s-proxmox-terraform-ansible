@@ -1,28 +1,3 @@
-terraform {
-  required_providers {
-    proxmox = {
-      source  = "telmate/proxmox"
-      version = ">=2.8.0"
-    }
-  }
-}
-
-provider "proxmox" {
-  pm_api_url      = "https://${var.pm_host}:8006/api2/json"
-  pm_user         = var.pm_user
-  pm_password     = var.pm_password
-  pm_tls_insecure = var.pm_tls_insecure
-  pm_parallel     = 10
-  pm_timeout      = 600
-  #  pm_debug = true
-  pm_log_enable = true
-  pm_log_file   = "terraform-plugin-proxmox.log"
-  pm_log_levels = {
-    _default    = "debug"
-    _capturelog = ""
-  }
-}
-
 resource "proxmox_vm_qemu" "proxmox_vm_master" {
   count       = var.num_k3s_masters
   name        = "k3s-master-${count.index}"
@@ -65,7 +40,7 @@ resource "proxmox_vm_qemu" "proxmox_vm_workers" {
       disk,
       network
     ]
-  }  
+  }
 
 }
 
@@ -83,14 +58,6 @@ resource "local_file" "k8s_file" {
 }
 
 resource "local_file" "var_file" {
-  source = "../inventory/sample/group_vars/all.yml"
+  source   = "../inventory/sample/group_vars/all.yml"
   filename = "../inventory/my-cluster/group_vars/all.yml"
-}
-
-output "Master-IPS" {
-  value = ["${proxmox_vm_qemu.proxmox_vm_master.*.default_ipv4_address}"]
-}
-
-output "worker-IPS" {
-  value = ["${proxmox_vm_qemu.proxmox_vm_workers.*.default_ipv4_address}"]
 }
