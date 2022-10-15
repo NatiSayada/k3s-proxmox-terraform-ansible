@@ -1,6 +1,6 @@
 # Build a Kubernetes cluster using k3s on Proxmox via Ansible and Terraform
 
-This is based on the great work that <https://github.com/itwars> done with Ansible, all I left to do is to put it all together with terraform and Proxmox!
+This is based on the great work that <https://github.com/itwars> has done with Ansible, all I left to do is to put it all together with terraform and Proxmox!
 
 ## System requirements
 
@@ -8,14 +8,13 @@ This is based on the great work that <https://github.com/itwars> done with Ansib
 * Terraform installed
 * Proxmox server
 
-## How to
-for updated documentation check out my [medium](https://medium.com/@ssnetanel/build-a-kubernetes-cluster-using-k3s-on-proxmox-via-ansible-and-terraform-c97c7974d4a5).
+---
 
-### Proxmox setup
+## Proxmox setup
 
 This setup is relaying on cloud-init images.
 
-Using cloud-init image save us a lot of time and it's work great!
+Using cloud-init images saves us a lot of time and it works great!
 I use ubuntu focal image, you can use whatever distro you like.
 
 to configure the cloud-init image you will need to connect to a Linux server and run the following:
@@ -35,7 +34,7 @@ it can also work for centos (R.I.P)
 wget https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
 ```
 
-update the image and install Proxmox agent - this is a must if we want terraform to work properly.
+update the image and install the Proxmox agent - this is a must if we want terraform to work properly.
 it can take a minute to add the package to the image.
 
 ```bash
@@ -96,26 +95,26 @@ you can connect to the Proxmox server and go to your VM and look on the cloud-in
 
 ![alt text](pics/gui-cloudinit-config.png)
 
-you will need to change the user name, password, and add the ssh public key so we can connect to the VM later using Ansible and terraform.
+you will need to change the user name, password, and add the ssh public key so we can connect to the VM later using Ansible and Terraform.
 update the variables and click on `Regenerate Image`
 
-Great! so now we can convert the VM to a template and start working with terraform.
+Great! so now we can convert the VM to a template and start working with Terraform.
 
 ```bash
 qm template 9000
 ```
 
-### terraform setup
+## Terraform setup
 
-our terraform file also creates a dynamic host file for Ansible, so we need to create the files first
+our Terraform file also creates a dynamic host file for Ansible, so we need to create the files first
 
 ```bash
 cp -R inventory/sample inventory/my-cluster
 ```
 
 Rename the file `terraform/variables.tfvars.sample` to `terraform/variables.tfvars` and update all the vars.
-there you can select how many nodes would you like to have on your cluster and configure the name of the base image. its also importent to update the ssh key that is going to be used and proxmox host address.
-to run the Terrafom, you will need to cd into `terraform` and run:
+there you can select how many nodes would you like to have on your cluster and configure the name of the base image. it is also important to update the ssh key that is going to be used and the Proxmox host address.
+to run the Terraform, you will need to cd into `terraform` and run:
 
 ```bash
 cd terraform/
@@ -124,18 +123,21 @@ terraform plan --var-file=variables.tfvars
 terraform apply --var-file=variables.tfvars
 ```
 
-it can take some time to create the servers on Proxmox but you can monitor them over Proxmox.
+> **_NOTE:_** If you have any more changes that you need to make for your environment, you can either update the `terraform/variables.tf` or `terraform/variables.tfvars`
+
+
+It can take some time to create the servers on Proxmox but you can monitor them over Proxmox.
 it should look like this now:
 
 ![alt text](pics/h0Ha98fXyO.png)
 
-### Ansible setup
+## Ansible setup
 
-First, update the var file in `inventory/my-cluster/group_vars/all.yml` and update the ```ansible_user``` that you're selected in the cloud-init setup. you can also choose if you wold like to install metallb and argocd. if you are installing metallb, you should also specified an ip range for metallb. 
+First, update the var file in `inventory/my-cluster/group_vars/all.yml` and update the ```ansible_user``` that you're selected in the cloud-init setup. you can also choose if you would like to install metallb and argocd. if you are installing metallb, you should also specify an IP range for metallb.
 
-if you are running multiple clusters in your kubeconfig file, make sure to disable ```copy_kubeconfig```.
+If you are running multiple clusters in your kubeconfig file, make sure to disable ```copy_kubeconfig```.
 
-after you run the Terrafom file, your file should look like this:
+After you run the Terraform file, your file should look like this:
 
 ```bash
 [master]
@@ -162,7 +164,7 @@ cd ..
 ansible-playbook -i inventory/my-cluster/hosts.ini site.yml
 ```
 
-It can a few minutes, but once its done, you should have a k3s cluster up and running.
+It can a few minutes, but once it's done, you should have a k3s cluster up and running.
 
 ### Kubeconfig
 
@@ -181,6 +183,6 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 ## Enjoy!
 
-Kubernets is realy fun to learn and there is so muche things that you can automate.
+Kubernets is fun to learn and there are so many things that you can automate.
 
 Have fun :)
