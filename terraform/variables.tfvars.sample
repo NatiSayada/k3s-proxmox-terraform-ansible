@@ -1,13 +1,20 @@
+# Proxmox
 pm_host = "192.168.3.110"
 pm_password = "password"
 pm_node_name = "pve"
 pm_tls_insecure = true
-pvt_key = "~/.ssh/proxk3s"
+tamplate_vm_name = "ubuntu-focal-cloudinit-template"
+
+# K3s Configuration
 num_k3s_masters = 1
 num_k3s_masters_mem = 4096
 num_k3s_nodes = 2
 num_k3s_nodes_mem = 4096
-tamplate_vm_name = "ubuntu-focal-cloudinit-template"
+pvt_key = "~/.ssh/proxk3s"
+
+# Network configuration
+networkrange = 24
+gateway = "192.168.3.1"
 master_ips = [
   "192.168.3.81"
 ]
@@ -17,4 +24,3 @@ worker_ips = [
   "192.168.3.93",
   "192.168.3.94",
 ]
-gateway = "192.168.3.1"
